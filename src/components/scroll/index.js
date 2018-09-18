@@ -4,7 +4,9 @@ import './index.css';
 
 
 const propTypes = {
-  
+  horizon: PropTypes.bool,
+  showDefaultPull: PropTypes.bool,
+  defaultPullOffset: PropTypes.number
 };
 
 
@@ -21,8 +23,9 @@ class Scroll extends PureComponent {
   componentDidMount() {
     const scrollWrapper = this.refs['scroll-wrapper']
     const scrollList = this.refs['scroll-list']
-    let { horizon, showDefaultPull } = this.state;
+    let { horizon, showDefaultPull, defaultPullOffset } = this.props;
     // ====
+    defaultPullOffset = defaultPullOffset || 30;
     let defaultOffset = showDefaultPull ? -30 : 0;
     this.defaultOffset = defaultOffset;
     let maxTopTransY = 30;

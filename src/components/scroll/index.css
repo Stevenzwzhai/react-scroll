@@ -1,0 +1,21 @@
+.scroll-wrapper {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.scroll-container {
+  position: relative;
+  display: inline-block;
+  transform: translate3d(0, 0, 0);
+  transition-duration: .2s;
+  -webkit-transition-duration: .2s;
+  transition-timing-function: ease-out;
+  -webkit-transition-timing-function: ease-out;
+}
+
+.scroll-pulldown,
+.scroll-pullup {
+  height: 30px;
+}

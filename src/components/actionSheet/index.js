@@ -12,12 +12,13 @@ const propTypes = {
 };
 
 
-class Scroll extends PureComponent {
+class ActionSheet extends PureComponent {
   
   constructor() {
     super();
     this.state = {
-      active: ''
+      show: false,
+      showContainer: false
     }
   }
 
@@ -26,7 +27,16 @@ class Scroll extends PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-
+    this.setState({
+      show: nextProps.show
+    })
+    //异步设置内容区域动画
+    let timer = setTimeout(() => {
+      clearTimeout(timer);
+      this.setState({
+        showContainer: nextProps.show
+      })
+    })
   }
 
   componentDidMount() {
@@ -36,23 +46,32 @@ class Scroll extends PureComponent {
     //   })
     // }, 3000)
   }
+
+  close = (e) => {
+    e.stopPropagation();
+    this.setState({
+      show: false,
+      showContainer: false
+    })
+  }
+
   render() {
-    console.log(this.props.show)
+    
     return (
-      <div className={`action-sheet ${this.props.dir} ${this.props.show ? 'active-' + this.props.dir : ''}`} onTouchMove={this.touchMoveHandle}>
-        <div ref="scroll-list" className="action-sheet-container">
+      <div className={`action-sheet`} onTouchMove={this.touchMoveHandle} style={{'display': this.state.show ? '' : 'none'}}>
+        <div className={`action-sheet-container ${this.props.dir} ${this.state.showContainer ? 'active-' + this.props.dir : ''}`}>
           {this.props.children}
         </div>
-        {this.props.mask ? (<div class="action-sheet-mask"></div>) : null}
+        {this.props.mask ? (<div className="action-sheet-mask" onClick={this.close}></div>) : null}
       </div>
     );
   }
 }
 
 
-Scroll.propTypes = propTypes;
+ActionSheet.propTypes = propTypes;
 
 
-export default Scroll;
+export default ActionSheet;
 
 

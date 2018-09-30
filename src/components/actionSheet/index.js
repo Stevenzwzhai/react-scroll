@@ -40,11 +40,11 @@ class ActionSheet extends PureComponent {
   }
 
   componentDidMount() {
-    // setTimeout(() => {
-    //   this.setState({
-    //     active: 'active'
-    //   })
-    // }, 3000)
+    console.log(this.props.width, this.refs['action-sheet-container'])
+    this.refs['action-sheet-container'].style.cssText = `
+      ${this.props.height ? 'height:'+this.props.height + 'px;' : '' }
+      ${this.props.width ? 'width:'+this.props.width + 'px;' : '' }
+    `
   }
 
   close = (e) => {
@@ -56,10 +56,9 @@ class ActionSheet extends PureComponent {
   }
 
   render() {
-    
     return (
       <div className={`action-sheet`} onTouchMove={this.touchMoveHandle} style={{'display': this.state.show ? '' : 'none'}}>
-        <div className={`action-sheet-container ${this.props.dir} ${this.state.showContainer ? 'active-' + this.props.dir : ''}`}>
+        <div ref="action-sheet-container" className={`action-sheet-container ${this.props.dir} ${this.state.showContainer ? 'active-' + this.props.dir : ''}`}>
           {this.props.children}
         </div>
         {this.props.mask ? (<div className="action-sheet-mask" onClick={this.close}></div>) : null}

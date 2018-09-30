@@ -37,7 +37,7 @@ class App extends Component {
         <button onClick={this.show.bind(this, 'left')}>left</button>
         <button onClick={this.show.bind(this, 'right')}>right</button>
         <button onClick={this.close}>close</button>
-        <ActionSheet dir={this.state.dir} mask={true} show={this.state.showAction} active={true}>
+        <ActionSheet width={50} height={200} dir={this.state.dir} mask={true} show={this.state.showAction} active={true}>
           <div>test action sheet</div>
         </ActionSheet>
         <div className="list"  onClick={this.close}>

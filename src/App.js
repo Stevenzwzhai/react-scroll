@@ -17,6 +17,9 @@ class App extends Component {
       showAction: true
     })
   }
+  scrollHandler = (pos) => {
+    console.log(pos)
+  }
   close = () => {
     this.setState({
       showAction: false
@@ -41,7 +44,7 @@ class App extends Component {
           <div>test action sheet</div>
         </ActionSheet>
         <div className="list"  onClick={this.close}>
-          <Scroll>
+          <Scroll scrollTo={100} scrollHandler={this.scrollHandler}>
             <div className="list-item">
             {
               Array(30).fill(1).map((item, key) => {

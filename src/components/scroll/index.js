@@ -37,7 +37,7 @@ class Scroll extends PureComponent {
     let curTrans = this.getTranslate(scrollList)
     let curOffsetY = 0
     let maxTransY = this.getMaxTrans(scrollWrapper, scrollList, horizon);
-    this.setTranslate(scrollList, defaultOffset, horizon)
+    this.setTranslate(scrollList, defaultOffset + (-Math.abs(this.props.scrollTo) || 0), horizon)
     scrollWrapper.addEventListener('touchstart', (e) => {
       startPos.x = e.touches[0].pageX
       startPos.y = e.touches[0].pageY
@@ -57,22 +57,19 @@ class Scroll extends PureComponent {
       this.setTranslate(scrollList, offset, horizon)
     })
     scrollWrapper.addEventListener('touchend', (e) => {
-      let offsetY = Math.max((curOffsetY * 0.6 + this.getTranslate(scrollList, horizon)), -maxTransY);
+      let offset = Math.max((curOffsetY * 1.1 + this.getTranslate(scrollList, horizon)), -maxTransY);
       let maxOffset = horizon ? scrollList.offsetWidth - scrollWrapper.offsetWidth : scrollList.offsetHeight - scrollWrapper.offsetHeight;
       curTrans = this.getTranslate(scrollList)
-      if(offsetY > defaultOffset){
-        console.log(1)
-        offsetY = defaultOffset;
-        this.setTranslate(scrollList, offsetY, horizon)
+      if(offset > defaultOffset){
+        offset = defaultOffset;
+        this.setTranslate(scrollList, offset, horizon)
         return ;
       }else if((maxOffset - defaultOffset) < Math.abs(curTrans)){
-        console.log(2)
-        offsetY = -(scrollList.offsetHeight - scrollWrapper.offsetHeight) - defaultOffset
-        this.setTranslate(scrollList, offsetY, horizon)
+        offset = -(scrollList.offsetHeight - scrollWrapper.offsetHeight) - defaultOffset
+        this.setTranslate(scrollList, offset, horizon)
         return;
       }else{
-        console.log(3)
-        this.setTranslate(scrollList, offsetY, horizon)
+        this.setTranslate(scrollList, offset, horizon)
       }
     })
   }
@@ -109,12 +106,19 @@ class Scroll extends PureComponent {
         transform: translate3d(0, ${value}px, 0);
       `
     }
+    this.scrollFnHandler(value)
   }
 
   correctTrans(horizon, startPos, nowPos) {
     let tan = Math.abs((nowPos.y-startPos.y)/(nowPos.x - startPos.x))
     let deg = 360 * tan/2*Math.PI 
     return horizon ? tan > 1 : tan < 1;
+  }
+
+  scrollFnHandler(pos) {
+    if(typeof this.props.scrollHandler === 'function'){
+      this.props.scrollHandler(Math.abs(pos));
+    }
   }
   
   render() {
